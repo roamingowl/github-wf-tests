@@ -1,0 +1,24 @@
+  name: Max length
+  on:
+    pull_request:
+    push:
+      branches:
+        - main
+    workflow_dispatch:
+
+
+  jobs:
+    main:
+      name: Main
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Finish
+          shell: bash
+          run: echo "Finished"
+    sub1:
+      name: Calling sub workflow
+      uses: ./.github/workflows/sub-workflow-1.yaml
+      with:
+          depth: '0'

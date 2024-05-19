@@ -1,0 +1,39 @@
+  name: Sub workflow
+  run-name: Sub workflow depth ${{ inputs.depth }}
+
+  on:
+    pull_request:
+    push:
+      branches:
+        - main
+    workflow_dispatch:
+      depth:
+        description: WF depth
+        required: false
+        default: '-1'
+
+
+  jobs:
+    main:
+      name: Main
+      runs-on: ubuntu-latest
+      outputs:
+        depth: ${{ steps.increase_depth.outputs.depth }}
+      steps:
+        - name: current depth
+          run: echo "Depth is ${{ inputs.depth }}"
+        - name: increase depth
+          id: increase_depth
+          shell: bash
+          run: |
+            VAR=$((${{ inputs.depth }} + 1))
+            echo "depth=$VAR" >> $GITHUB_OUTPUT
+
+    sub:
+      name: Calling sub workflow
+      if: ${{ needs.main.outputs.depth < 3 }}
+      needs:
+        - main
+      uses: ./.github/workflows/sub-workflow-1.yaml
+      with:
+        depth: ${{ needs.main.outputs.depth }}
