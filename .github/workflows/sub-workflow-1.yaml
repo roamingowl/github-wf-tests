@@ -22,10 +22,10 @@
           shell: bash
           run: |
             echo "Depth is ${{ inputs.depth }}"
-    sub:
-      name: Calling sub workflow
-      needs:
-        - main
-      uses: ./.github/workflows/sub-workflow-1.yaml
-      with:
-        depth: ${{ needs.main.outputs.depth }}
+#    sub:
+#      name: Calling sub workflow
+#      needs:
+#        - main
+#      uses: ./.github/workflows/sub-workflow-1.yaml
+#      with:
+#        depth: ${{ needs.main.outputs.depth }}
