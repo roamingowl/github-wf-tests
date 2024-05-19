@@ -1,5 +1,5 @@
-  name: Sub workflow
-  run-name: Sub workflow depth ${{ inputs.depth }}
+  name: Sub wf 1
+  run-name: Sub wf depth ${{ inputs.depth }}
 
   on:
     pull_request:
@@ -17,21 +17,13 @@
     main:
       name: Main
       runs-on: ubuntu-latest
-      outputs:
-        depth: ${{ steps.increase_depth.outputs.depth }}
       steps:
-        - name: current depth
-          run: echo "Depth is ${{ inputs.depth }}"
-        - name: increase depth
-          id: increase_depth
+        - name: Depth
           shell: bash
           run: |
-            VAR=$((${{ inputs.depth }} + 1))
-            echo "depth=$VAR" >> $GITHUB_OUTPUT
-
+            echo "Depth is ${{ inputs.depth }}"
     sub:
       name: Calling sub workflow
-      if: ${{ needs.main.outputs.depth == '0' || needs.main.outputs.depth == '1' }}
       needs:
         - main
       uses: ./.github/workflows/sub-workflow-1.yaml
